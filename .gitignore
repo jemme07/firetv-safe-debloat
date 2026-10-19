@@ -1,0 +1,16 @@
+# Local session logs, baselines, and execution records
+firetv-debloat/
+baselines/
+reference/
+apks/
+*.log
+*.tmp
+.android/
+
+# System and OS files
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
