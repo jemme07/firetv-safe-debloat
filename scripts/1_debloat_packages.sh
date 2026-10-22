@@ -7,26 +7,44 @@
 
 set -euo pipefail
 
-# Auto-detect ADB device if not specified
-DEVICE="${1:-$(adb devices | grep -v "List" | grep "device" | head -n 1 | awk '{print $1}')}"
+DEVICE=""
+KEEP_PHOTOS=false
+
+for arg in "$@"; do
+    if [[ "$arg" == "--keep-photos" ]]; then
+        KEEP_PHOTOS=true
+    elif [[ -z "$DEVICE" && "$arg" != -* ]]; then
+        DEVICE="$arg"
+    fi
+done
 
 if [[ -z "$DEVICE" ]]; then
-    echo "Error: No connected ADB device detected. Specify device IP:port as \$1."
+    DEVICE="$(adb devices | grep -v "List" | grep "device" | head -n 1 | awk '{print $1}')"
+fi
+
+if [[ -z "$DEVICE" ]]; then
+    echo "Error: No connected ADB device detected. Specify device IP:port as argument."
     exit 1
 fi
 
 echo "Connecting to device: $DEVICE"
+if [[ "$KEEP_PHOTOS" == true ]]; then
+    echo "Option --keep-photos detected: Amazon Photos will remain enabled for screensaver."
+fi
 
 # Confirmed safe standalone consumer extras & promo packages
 DEBLOAT_PACKAGES=(
     # Consumer background sync services
-    "com.amazon.bueller.photos"      # Amazon Photos background sync
     "com.amazon.bueller.music"       # Amazon Music TV app
     "com.amazon.recess"              # Casual gaming promo hub
     "com.amazon.ods.kindleconnect"   # Remote screen sharing support stub
     "com.amazon.ceviche"             # Live TV guide aggregator
     "com.amazon.ftv.screensaver"     # Promo screensaver prefetcher
 )
+
+if [[ "$KEEP_PHOTOS" != true ]]; then
+    DEBLOAT_PACKAGES+=("com.amazon.bueller.photos") # Amazon Photos background sync
+fi
 
 echo "--- Disabling Safe Bloatware Packages ---"
 for pkg in "${DEBLOAT_PACKAGES[@]}"; do

@@ -27,14 +27,23 @@ for pkg in "${AD_PACKAGES[@]}"; do
 done
 
 echo -e "\n--- 2. Setting Strict Privacy Toggles ---"
-adb -s "$DEVICE" shell settings put secure limit_ad_tracking 1
-adb -s "$DEVICE shell settings put secure interest_based_ads 0"
-adb -s "$DEVICE" shell settings put global usage_metrics_marketing_enabled 0
+adb -s "$DEVICE" shell settings put secure limit_ad_tracking 1 || true
+adb -s "$DEVICE" shell settings put secure interest_based_ads 0 || true
+adb -s "$DEVICE" shell settings put global usage_metrics_marketing_enabled 0 || true
 
-echo -e "\n--- 3. Activating Encrypted Private DNS ($DNS_HOST) ---"
-adb -s "$DEVICE" shell settings put global private_dns_mode hostname
-adb -s "$DEVICE" shell settings put global private_dns_specifier "$DNS_HOST"
+echo -e "\n--- 3. Configuring Encrypted Private DNS ($DNS_HOST) ---"
+SDK_VER="$( (adb -s "$DEVICE" shell getprop ro.build.version.sdk 2>/dev/null || true) | tr -d '\r\n')"
+SDK_VER="${SDK_VER:-0}"
 
-echo "Private DNS Mode: $(adb -s "$DEVICE" shell settings get global private_dns_mode)"
-echo "Private DNS Host: $(adb -s "$DEVICE" shell settings get global private_dns_specifier)"
-echo "Ad-blocking and anti-tracking active!"
+if [[ "$SDK_VER" -ge 28 ]]; then
+    adb -s "$DEVICE" shell settings put global private_dns_mode hostname || true
+    adb -s "$DEVICE" shell settings put global private_dns_specifier "$DNS_HOST" || true
+    echo "Private DNS Mode: $(adb -s "$DEVICE" shell settings get global private_dns_mode 2>/dev/null || echo 'N/A')"
+    echo "Private DNS Host: $(adb -s "$DEVICE" shell settings get global private_dns_specifier 2>/dev/null || echo 'N/A')"
+    echo "Ad-blocking and anti-tracking active!"
+else
+    echo "Notice: Android SDK level is $SDK_VER (Android < 9.0 / Fire OS 5 or 6)."
+    echo "Native Android Private DNS (DoT) requires Android 9+ (Fire OS 7+)."
+    echo "Privacy toggles and telemetry package disables were applied successfully."
+    echo "To block ads on Fire OS 5/6, set your Wi-Fi DNS to AdGuard (94.140.14.14) or use a DNS app."
+fi

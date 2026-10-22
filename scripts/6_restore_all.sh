@@ -25,12 +25,33 @@ PACKAGES_TO_RESTORE=(
     "com.amazon.dp.logger"
 )
 
-echo "--- Re-enabling All Packages ---"
+echo "--- 1. Re-enabling All Packages ---"
 for pkg in "${PACKAGES_TO_RESTORE[@]}"; do
     echo -n "Enabling $pkg: "
     adb -s "$DEVICE" shell pm enable "$pkg" 2>&1 || true
 done
 
-echo -e "\n--- Currently Disabled Packages ---"
+echo -e "\n--- 2. Resetting AppOps Restrictions ---"
+STREAMING_APPS=(
+    "in.startv.hotstar"
+    "com.netflix.ninja"
+    "tv.airtel.xstream.tvapp"
+    "com.suntv.sunnxt"
+    "ahaflix.tv"
+    "com.crunchyroll.crunchyroid"
+    "com.amazon.device.crashmanager"
+)
+for app in "${STREAMING_APPS[@]}"; do
+    adb -s "$DEVICE" shell cmd appops set "$app" RUN_IN_BACKGROUND default 2>/dev/null || \
+    adb -s "$DEVICE" shell appops set "$app" RUN_IN_BACKGROUND default 2>/dev/null || true
+done
+echo "Reset AppOps background execution to default."
+
+echo -e "\n--- 3. Restoring Default Autoplay & Process Limits ---"
+adb -s "$DEVICE" shell settings put global auto_play_video 1 || true
+adb -s "$DEVICE" shell settings put global auto_play_audio 1 || true
+adb -s "$DEVICE" shell settings delete global standard_background_process_limit || true
+
+echo -e "\n--- 4. Currently Disabled Packages ---"
 adb -s "$DEVICE" shell pm list packages -d
 echo "Restoration complete."

@@ -26,12 +26,12 @@ for pkg in "${AD_PACKAGES[@]}"; do
 done
 
 echo -e "\n--- 2. Resetting Privacy Toggles ---"
-adb -s "$DEVICE" shell settings put secure limit_ad_tracking 0
-adb -s "$DEVICE" shell settings put secure interest_based_ads 1
-adb -s "$DEVICE" shell settings put global usage_metrics_marketing_enabled 1
+adb -s "$DEVICE" shell settings put secure limit_ad_tracking 0 || true
+adb -s "$DEVICE" shell settings put secure interest_based_ads 1 || true
+adb -s "$DEVICE" shell settings put global usage_metrics_marketing_enabled 1 || true
 
 echo -e "\n--- 3. Resetting Private DNS to Automatic ---"
-adb -s "$DEVICE" shell settings put global private_dns_mode opportunistic
-adb -s "$DEVICE" shell settings delete global private_dns_specifier || true
+adb -s "$DEVICE" shell settings put global private_dns_mode opportunistic || true
+adb -s "$DEVICE" shell settings delete global private_dns_specifier 2>/dev/null || true
 
 echo "Ad-blocking reverted. DNS set back to automatic."
