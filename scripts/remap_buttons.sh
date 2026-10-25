@@ -4,8 +4,10 @@
 
 TARGET="com.spocky.projengmenu/.ui.home.MainActivity"
 
-logcat -c
 while true; do
-  logcat -m 1 -e "launchApp for application (netflix|disney|amazonmusic)" >/dev/null 2>&1
-  am start -W -f 0x10000000 "$TARGET" >/dev/null 2>&1
+  # Wait for a fresh button event (using -T 1 so it never loops on historical logs)
+  logcat -T 1 -m 1 -e "launchApp for application (netflix|disney|amazonmusic)" >/dev/null 2>&1
+  # Bring Projectivy forward using SINGLE_TOP flag (0x30000000) so it doesn't reset position if already open
+  am start -f 0x30000000 "$TARGET" >/dev/null 2>&1
+  sleep 1
 done
