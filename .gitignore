@@ -3,6 +3,8 @@ firetv-debloat/
 baselines/
 reference/
 apks/
+downloads/
+scratch/
 *.log
 *.tmp
 .android/
