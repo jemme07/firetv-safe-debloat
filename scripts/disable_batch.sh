@@ -29,6 +29,7 @@ CANDIDATE_PACKAGES=(
     "com.amazon.shoptv.client"       # Shop on TV client
     "com.amazon.shoptv.firetv.client" # Shop on Fire TV client
     "com.amazon.tv.livetv"           # Live TV aggregator
+    "com.amazon.firetv.troubleshooting" # Fire TV troubleshooting promo app
     # Telemetry and ad profiling
     "com.amazon.hybridadidservice"   # Amazon Advertising ID service
     "com.amazon.dp.logger"           # Device platform telemetry logger

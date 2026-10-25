@@ -27,6 +27,7 @@ PACKAGES_TO_RESTORE=(
     "com.amazon.hybridadidservice"
     "com.amazon.tv.acr"
     "com.amazon.dp.logger"
+    "com.amazon.firetv.troubleshooting"
 )
 
 echo "--- 1. Re-enabling All Packages ---"

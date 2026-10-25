@@ -44,6 +44,7 @@ DEBLOAT_PACKAGES=(
     "com.amazon.shoptv.client"       # Shop on TV client
     "com.amazon.shoptv.firetv.client" # Shop on Fire TV client
     "com.amazon.tv.livetv"           # Live TV sync service
+    "com.amazon.firetv.troubleshooting" # Fire TV troubleshooting promo app
 )
 
 if [[ "$KEEP_PHOTOS" != true ]]; then
