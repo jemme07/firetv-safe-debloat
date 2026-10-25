@@ -34,6 +34,16 @@ STREAMING_APPS=(
     "ahaflix.tv"
     "com.crunchyroll.crunchyroid"
     "com.amazon.device.crashmanager"
+    "com.stremio.one"
+    "com.sportzx.live"
+    "dev.app.cloosi"
+    "uk.co.uktv.dave"
+    "org.videolan.vlc"
+    "org.xbmc.kodi"
+    "com.disney.disneyplus"
+    "uk.co.bbc.iplayer"
+    "com.channel4.ondemand"
+    "air.ITVMobilePlayer"
 )
 
 for app in "${STREAMING_APPS[@]}"; do

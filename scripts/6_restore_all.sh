@@ -20,6 +20,10 @@ PACKAGES_TO_RESTORE=(
     "com.amazon.ods.kindleconnect"
     "com.amazon.ceviche"
     "com.amazon.ftv.screensaver"
+    "com.amazon.gamehub"
+    "com.amazon.shoptv.client"
+    "com.amazon.shoptv.firetv.client"
+    "com.amazon.tv.livetv"
     "com.amazon.hybridadidservice"
     "com.amazon.tv.acr"
     "com.amazon.dp.logger"
@@ -40,6 +44,16 @@ STREAMING_APPS=(
     "ahaflix.tv"
     "com.crunchyroll.crunchyroid"
     "com.amazon.device.crashmanager"
+    "com.stremio.one"
+    "com.sportzx.live"
+    "dev.app.cloosi"
+    "uk.co.uktv.dave"
+    "org.videolan.vlc"
+    "org.xbmc.kodi"
+    "com.disney.disneyplus"
+    "uk.co.bbc.iplayer"
+    "com.channel4.ondemand"
+    "air.ITVMobilePlayer"
 )
 for app in "${STREAMING_APPS[@]}"; do
     adb -s "$DEVICE" shell cmd appops set "$app" RUN_IN_BACKGROUND default 2>/dev/null || \

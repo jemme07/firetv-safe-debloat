@@ -26,7 +26,7 @@ echo "Fire OS / Build: ${FIREOS_VER:-Unknown}"
 echo "Android SDK: ${SDK_VER:-Unknown}"
 
 echo -e "\n2. Active Launcher Activity:"
-(adb -s "$DEVICE" shell "pm resolve-activity -a android.intent.action.MAIN -c android.intent.category.HOME" 2>/dev/null || true) | grep -E "packageName=|ActivityInfo:" || echo "Default launcher active"
+(adb -s "$DEVICE" shell "cmd package resolve-activity -a android.intent.action.MAIN -c android.intent.category.HOME 2>/dev/null || pm resolve-activity -a android.intent.action.MAIN -c android.intent.category.HOME 2>/dev/null || true") | grep -E "packageName=|ActivityInfo:" || echo "Default launcher active"
 
 echo -e "\n3. Available Storage (/data):"
 adb -s "$DEVICE" shell df -h /data 2>/dev/null || echo "Storage info unavailable"

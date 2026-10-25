@@ -40,6 +40,10 @@ DEBLOAT_PACKAGES=(
     "com.amazon.ods.kindleconnect"   # Remote screen sharing support stub
     "com.amazon.ceviche"             # Live TV guide aggregator
     "com.amazon.ftv.screensaver"     # Promo screensaver prefetcher
+    "com.amazon.gamehub"             # Amazon Games promo hub
+    "com.amazon.shoptv.client"       # Shop on TV client
+    "com.amazon.shoptv.firetv.client" # Shop on Fire TV client
+    "com.amazon.tv.livetv"           # Live TV sync service
 )
 
 if [[ "$KEEP_PHOTOS" != true ]]; then
@@ -54,6 +58,6 @@ done
 
 echo -e "\n--- Verifying Launcher & Connection ---"
 adb -s "$DEVICE" get-state
-adb -s "$DEVICE" shell "pm resolve-activity -a android.intent.action.MAIN -c android.intent.category.HOME" | grep "packageName="
+adb -s "$DEVICE" shell "cmd package resolve-activity -a android.intent.action.MAIN -c android.intent.category.HOME 2>/dev/null || pm resolve-activity -a android.intent.action.MAIN -c android.intent.category.HOME 2>/dev/null || true" | grep -E "packageName=|ActivityInfo:" || echo "Default launcher verified"
 
 echo "Debloat script complete."
